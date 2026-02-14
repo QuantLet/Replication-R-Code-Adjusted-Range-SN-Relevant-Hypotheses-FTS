@@ -1,0 +1,6 @@
+   n_days n_trade_days pnl_total pnl_mean  pnl_sd sharpe_daily
+    <int>        <int>     <num>    <num>   <num>        <num>
+1:     35           11  494.3814 14.12518 135.969    0.1038854
+   sharpe_ann_365
+            <num>
+1:       1.984727
