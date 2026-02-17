@@ -177,22 +177,7 @@ Main outputs:
 **How to recover the reported break dates** (e.g., 2025-10-08, 2025-12-03):  
 look at `btc_iv_rolling_cpp_hits_*.csv` and take the most frequent `cp_date` values among rejected windows.
 
-### 2) Run the break-direction straddle illustration (paper)
-
-After Step 1 (or if `output/tables/btc_daily_iv_smiles.csv` and `data/btc_spot_binance.csv` already exist):
-
-```r
-source("run_strategy_break_direction_straddle.R")
-```
-
-Outputs:
-- `output/strategy_break/relevant_break_detector.csv`
-- `output/strategy_break/relevant_break_positions.csv`
-- `output/strategy_break/relevant_break_pnl.csv`
-- `output/strategy_break/relevant_break_cum_pnl.png`
-- `output/strategy_break/relevant_break_summary.txt`
-
-### 3) Optional: VRP regime-gated strategy (research)
+### 2) Optional: VRP regime-gated strategy (research)
 
 ```r
 source("run_strategy_relevant_trading.R")
@@ -233,13 +218,6 @@ Outputs:
 ### Pivotal quantiles cache (Brownian functional simulation)
 - `Q_CACHE` (default `data/qvalues_cpp.rds`)
 - `QSIM_N` (default 5000), `QSIM_GRID_N` (default 1000)
-
-### Trading illustration knobs (break-direction straddle)
-Edit in `run_strategy_break_direction_straddle.R` (or expose via env vars if you prefer):
-- `hold_days` (default 3)
-- `tau_days` (default 30), `strike_step` (default 1000)
-- `tc_opt` (default 0.0010), `tc_spot` (default 0.0002)
-- `day_count` (default 365)
 
 ---
 
