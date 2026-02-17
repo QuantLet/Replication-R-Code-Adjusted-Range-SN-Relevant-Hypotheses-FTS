@@ -21,17 +21,20 @@ l2_sq <- function(x, w) {
   sum(w * x^2)
 }
 
-est_cp_matrix <- function(curves_mat, eps_trim = 0.05, w = NULL) {
-  # curves_mat: N x P
+est_cp_matrix <- function(curves_mat, eps_trim = 0.05, w = NULL, min_seg = 2) {
   N <- nrow(curves_mat)
   P <- ncol(curves_mat)
   if (is.null(w)) w <- trap_weights(P)
-  k_min <- floor(N * eps_trim) + 1
-  k_max <- N - floor(N * eps_trim)
-  if (k_max <= k_min) stop("Not enough observations for given eps_trim")
 
-  # Precompute cumulative sums for fast segment means
-  cs <- apply(curves_mat, 2, cumsum)  # N x P
+  # 原来：k_min <- floor(N*eps_trim)+1
+  #      k_max <- N - floor(N*eps_trim)
+  # 改成：两侧至少 min_seg 个点
+  k_min <- max(floor(N * eps_trim) + 1, min_seg)
+  k_max <- min(N - floor(N * eps_trim), N - min_seg)
+
+  if (k_max <= k_min) stop("Not enough observations for given eps_trim/min_seg")
+
+  cs <- apply(curves_mat, 2, cumsum)
   total <- cs[N, ]
 
   best_k <- k_min
