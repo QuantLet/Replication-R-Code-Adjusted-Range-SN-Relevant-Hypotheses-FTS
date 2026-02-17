@@ -299,24 +299,6 @@ hits_file <- sprintf("output/tables/btc_iv_rolling_cpp_hits_W%d_alpha%.2f.csv",
 data.table::fwrite(hits, file = hits_file)
 message("Saved breakpoint hit counts: ", hits_file)
 
-# Plot: implied relevance boundary (Adjusted-range)
-p <- ggplot2::ggplot(roll, ggplot2::aes(x = date_end, y = RMS_boundary_vol_pts_ar)) +
-  ggplot2::geom_line() +
-  ggplot2::geom_point(data = roll[reject_ar == TRUE], ggplot2::aes(x = date_end, y = RMS_boundary_vol_pts_ar)) +
-  ggplot2::geom_hline(yintercept = 100 * config$roll_Delta_rms, linetype = "dashed") +
-  ggplot2::labs(
-    title = sprintf("Rolling relevant change-point boundary (Adjusted-range SN)\nW=%d, alpha=%.2f (90%% quantile), Delta_rms=%.1f vp",
-                    config$roll_window, config$roll_alpha, 100 * config$roll_Delta_rms),
-    x = "Window end date",
-    y = "Implied relevance boundary (RMS vol points)"
-  ) +
-  ggplot2::theme_minimal()
-
-fig_file <- sprintf("output/figures/btc_iv_rolling_boundary_ar_W%d_alpha%.2f.png",
-                    config$roll_window, config$roll_alpha)
-ggplot2::ggsave(fig_file, p, width = 9, height = 4.5)
-message("Saved plot: ", fig_file)
-
 message("\nTop rolling-window break dates (when significant at alpha=0.10):")
 print(head(hits, 20))
 message("\nDone.")
