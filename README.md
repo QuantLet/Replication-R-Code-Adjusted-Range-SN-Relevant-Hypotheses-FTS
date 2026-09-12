@@ -1,37 +1,43 @@
-<div style="margin: 0; padding: 0; text-align: center; border: none;">
-<a href="https://quantlet.com" target="_blank" style="text-decoration: none; border: none;">
-<img src="https://github.com/StefanGam/test-repo/blob/main/quantlet_design.png?raw=true" alt="Header Image" width="100%" style="margin: 0; padding: 0; display: block; border: none;" />
-</a>
-</div>
+# R code for relevant functional mean changes
 
+This repository contains the R programs for the paper *Relevant Mean Changes in Functional Time Series under Weak Directional Moments* by Zhuo Lin, Jiajing Sun, Wolfgang Karl Härdle, and Meiting Zhu.
+
+The code implements adjusted-range and quadratic self-normalization and a same-block scalar Wald procedure. It covers the unknown-break simulations, nonuniform variance profiles, changing persistence, directional and orthogonal heavy tails, exact finite-grid Gaussian references, variance diagnostics, and the electricity-demand application. The empirical program downloads the public National Energy System Operator data and verifies the fixed file checksums before analysis.
+
+## Requirements
+
+Use R 4.2 or later and install:
+
+```r
+install.packages(c('digest','matrixStats','qrng','spacefillr','ggplot2','patchwork'))
 ```
-Name of Quantlet: Replication-R-Code-Adjusted-Range-SN-Relevant-Hypotheses-FTS
 
-Published in: Adjusted-Range Self-Normalization for Relevant Hypotheses in Functional Time Series
+## Run
 
-Description: R code accompanying the manuscript "Adjusted-Range Self-Normalization for Relevant Hypotheses in Functional Time Series".
-Implements fully functional (no KL/FPCA truncation) inference for relevant hypotheses in weakly dependent functional time series, with:
-(i) quadratic self-normalization benchmark (Dette et al.-style),
-(ii) adjusted-range self-normalization (proposed),
-(iii) Monte Carlo calibration for the classical/degenerate case Delta = 0,
-(iv) simulation studies (size and power under multiple dependence structures),
-(v) empirical illustration based on trade-level Bitcoin options data that constructs daily constant-maturity implied-volatility smiles
-and applies relevant mean change-point testing with economically interpretable “relevance” statements.
+Run commands from the repository root.
 
-Submitted: 14 February 2026
+```sh
+Rscript run_simulations.R
+Rscript run_empirical.R
+Rscript make_figures.R
+Rscript validate.R
+```
 
-Keywords: 
-- Relevant hypothesis
-- Functional time series
-- Weak dependence
-- Self-normalization
-- Adjusted range
-- Mean function
-- Covariance operator
-- Relevant change-point detection
-- Monte Carlo critical values
-- Bitcoin options
-- Implied-volatility smile
-- R
+`run_simulations.R` reproduces the primary Monte Carlo study with 2,000 data samples per configuration and is computationally intensive. `run_empirical.R` downloads the public source files into `data/raw/` and writes calculated results to `results/`. `make_figures.R` writes the main simulation and empirical plots to `figures/`. Generated data, results, figures, and validation output are intentionally excluded from version control.
 
-Author: Zhuo Lin, Jiajing Sun, Wolfgang Karl Härdle, Meiting Zhu
+`run_all.R` executes all four steps in order.
+
+## Code map
+
+- `R/core.R`: functional statistics, split estimation, block profiles, Gaussian references, and bootstrap kernels.
+- `R/simulation_helpers.R`: data-generating processes and common simulation utilities.
+- `R/primary_simulations.R`: unknown-break, observed-loading, and ordinary-mean experiments.
+- `R/size_adjusted_power.R`: independent size adjustment and paired uncertainty intervals.
+- `R/variance_diagnostics.R`: block-variance bias diagnostics.
+- `R/data_preparation.R`: public data download, checksum verification, and curve construction.
+- `R/empirical_analysis.R`: level/shape decomposition and calendar sensitivity analysis.
+- `R/figures.R`: color-blind-friendly figures with line-type distinctions.
+- `R/validation.R`: numerical checks for segment rounding, reference construction, degeneracy handling, and scale behavior.
+- `R/limiting_power.R`: Brownian limiting-power calculations.
+
+The data source is the [NESO Historic Demand Data portal](https://www.neso.energy/data-portal/historic-demand-data).
